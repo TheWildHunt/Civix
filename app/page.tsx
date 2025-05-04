@@ -199,7 +199,7 @@ export default function Home() {
         >
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip />
+          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
           <Bar dataKey="asistencia" stackId="a" fill="#86efac">
             <LabelList dataKey="asistencia" position="right" />
           </Bar>
@@ -248,4 +248,3 @@ export default function Home() {
     </div>
   );
 }
-
