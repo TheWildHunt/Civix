@@ -14,6 +14,45 @@ const data = [
 const categories = ["planta", "contrata", "honorarios", "codigo"];
 const sections = ["Senadores", "Diputados", "Gobernadores y CORE", "Alcaldes", "Concejales", "Comparar por Comuna"];
 
+const alcaldePuertoVaras = {
+  nombre: "Tomás Gárate Silva",
+  votos: 5677,
+  partido: "Independiente",
+};
+
+const concejalesPuertoVaras = [
+  {
+    nombre: "Rocío Alvarado Díaz",
+    votos: 3980,
+    partido: "Independiente",
+  },
+  {
+    nombre: "Juan Patricio Godoy",
+    votos: 2516,
+    partido: "Independiente",
+  },
+  {
+    nombre: "Marcelo Salazar Vallejos",
+    votos: 1009,
+    partido: "Unión Demócrata Independiente",
+  },
+  {
+    nombre: "Antonio Horn Cruz",
+    votos: 953,
+    partido: "Renovación Nacional",
+  },
+  {
+    nombre: "Rodrigo Schnettler Weisser",
+    votos: 773,
+    partido: "Democracia Cristiana",
+  },
+  {
+    nombre: "Nataly Schadow Muñoz",
+    votos: 758,
+    partido: "Partido Socialista de Chile",
+  },
+];
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("planta");
   const [selectedSection, setSelectedSection] = useState("Comparar por Comuna");
@@ -35,7 +74,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Contenido de sección: solo mostramos si está seleccionada la sección de comparación */}
+      {/* Sección: Comparar por Comuna */}
       {selectedSection === "Comparar por Comuna" && (
         <>
           <div className="flex gap-2">
@@ -63,7 +102,45 @@ export default function Home() {
           </Card>
         </>
       )}
+
+      {/* Sección: Alcaldes */}
+      {selectedSection === "Alcaldes" && (
+        <Card>
+          <CardContent>
+            <h2 className="text-lg font-semibold mb-2">Alcalde de Puerto Varas (2021–2024)</h2>
+            <p><strong>Nombre:</strong> {alcaldePuertoVaras.nombre}</p>
+            <p><strong>Votos:</strong> {alcaldePuertoVaras.votos.toLocaleString()}</p>
+            <p><strong>Partido:</strong> {alcaldePuertoVaras.partido}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Sección: Concejales */}
+      {selectedSection === "Concejales" && (
+        <Card>
+          <CardContent>
+            <h2 className="text-lg font-semibold mb-2">Concejales de Puerto Varas (2021–2024)</h2>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left border-b">
+                  <th className="py-2">Nombre</th>
+                  <th className="py-2">Votos</th>
+                  <th className="py-2">Partido</th>
+                </tr>
+              </thead>
+              <tbody>
+                {concejalesPuertoVaras.map((c) => (
+                  <tr key={c.nombre} className="border-b hover:bg-gray-50">
+                    <td className="py-2">{c.nombre}</td>
+                    <td className="py-2">{c.votos.toLocaleString()}</td>
+                    <td className="py-2">{c.partido}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
-
