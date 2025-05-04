@@ -220,12 +220,12 @@ export default function Home() {
         <BarChart layout="vertical" data={comuna.asignaciones} margin={{ left: 100 }}>
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(v) => CLPFormatter.format(v)} />
+          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
           <Bar dataKey="utilizadas" stackId="a" fill="#86efac">
-            <LabelList dataKey="utilizadas" position="right" formatter={(v) => CLPFormatter.format(v)} />
+            <LabelList dataKey="utilizadas" position="right" formatter={(value: number) => CLPFormatter.format(value)} />
           </Bar>
           <Bar dataKey="noUtilizadas" stackId="a" fill="#f0f0f0">
-            <LabelList dataKey="noUtilizadas" position="right" formatter={(v) => CLPFormatter.format(v)} />
+            <LabelList dataKey="noUtilizadas" position="right" formatter={(value: number) => CLPFormatter.format(value)} />
           </Bar>
         </BarChart>
       ) : (
