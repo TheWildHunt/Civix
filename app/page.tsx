@@ -211,7 +211,7 @@ export default function Home() {
         <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
+          <Tooltip formatter={(value) => typeof value === 'number' ? CLPFormatter.format(value) : ''} />
           <Bar dataKey="monto" fill="#06b6d4">
             <LabelList dataKey="monto" position="right" formatter={(value: number) => CLPFormatter.format(value)} />
           </Bar>
