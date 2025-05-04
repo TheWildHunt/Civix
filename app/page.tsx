@@ -199,7 +199,7 @@ export default function Home() {
         >
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
+          <Tooltip formatter={(value) => typeof value === 'number' ? CLPFormatter.format(value) : ''} />
           <Bar dataKey="asistencia" stackId="a" fill="#86efac">
             <LabelList dataKey="asistencia" position="right" />
           </Bar>
@@ -232,7 +232,7 @@ export default function Home() {
         <BarChart layout="vertical" data={comuna.puntosVarios} margin={{ left: 100 }}>
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip />
+          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
           <Bar dataKey="puntos" fill="#a78bfa">
             <LabelList dataKey="puntos" position="right" />
           </Bar>
