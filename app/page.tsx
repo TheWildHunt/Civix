@@ -12,7 +12,20 @@ const data = [
 ];
 
 const categories = ["planta", "contrata", "honorarios", "codigo"];
-const sections = ["Senadores", "Diputados", "Gobernadores y CORE", "Alcaldes", "Concejales", "Comparar por Comuna"];
+const sections = [
+  "Senadores",
+  "Diputados",
+  "Gobernadores y CORE",
+  "Alcaldes",
+  "Concejales",
+  "Comparar por Comuna",
+  "Asistencia Ordinaria",
+  "Asistencia Extraordinaria",
+  "Asistencia Total",
+  "Remuneraciones",
+  "Asignaciones",
+  "Puntos Varios"
+];
 
 const alcaldePuertoVaras = {
   nombre: "Tomás Gárate Silva",
@@ -21,36 +34,70 @@ const alcaldePuertoVaras = {
 };
 
 const concejalesPuertoVaras = [
-  {
-    nombre: "Rocío Alvarado Díaz",
-    votos: 3980,
-    partido: "Independiente",
-  },
-  {
-    nombre: "Juan Patricio Godoy",
-    votos: 2516,
-    partido: "Independiente",
-  },
-  {
-    nombre: "Marcelo Salazar Vallejos",
-    votos: 1009,
-    partido: "Unión Demócrata Independiente",
-  },
-  {
-    nombre: "Antonio Horn Cruz",
-    votos: 953,
-    partido: "Renovación Nacional",
-  },
-  {
-    nombre: "Rodrigo Schnettler Weisser",
-    votos: 773,
-    partido: "Democracia Cristiana",
-  },
-  {
-    nombre: "Nataly Schadow Muñoz",
-    votos: 758,
-    partido: "Partido Socialista de Chile",
-  },
+  { nombre: "Rocío Alvarado Díaz", votos: 3980, partido: "Independiente" },
+  { nombre: "Juan Patricio Godoy", votos: 2516, partido: "Independiente" },
+  { nombre: "Marcelo Salazar Vallejos", votos: 1009, partido: "Unión Demócrata Independiente" },
+  { nombre: "Antonio Horn Cruz", votos: 953, partido: "Renovación Nacional" },
+  { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "Democracia Cristiana" },
+  { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "Partido Socialista de Chile" },
+];
+
+const asistenciaOrdinaria = [
+  { nombre: "Marcelo Salazar", asistencia: 125, inasistencia: 0 },
+  { nombre: "Rodrigo Schnettler", asistencia: 125, inasistencia: 0 },
+  { nombre: "Rocío Alvarado", asistencia: 119, inasistencia: 6 },
+  { nombre: "Nataly Schadow", asistencia: 115, inasistencia: 10 },
+  { nombre: "Tomás Gárate", asistencia: 114, inasistencia: 11 },
+  { nombre: "Antonio Horn", asistencia: 106, inasistencia: 19 },
+  { nombre: "Juan Godoy", asistencia: 96, inasistencia: 29 },
+];
+
+const asistenciaExtraordinaria = [
+  { nombre: "Rodrigo Schnettler", asistencia: 30, inasistencia: 0 },
+  { nombre: "Rocío Alvarado", asistencia: 29, inasistencia: 1 },
+  { nombre: "Nataly Schadow", asistencia: 28, inasistencia: 2 },
+  { nombre: "Marcelo Salazar", asistencia: 28, inasistencia: 2 },
+  { nombre: "Tomás Gárate", asistencia: 27, inasistencia: 3 },
+  { nombre: "Antonio Horn", asistencia: 24, inasistencia: 6 },
+  { nombre: "Juan Godoy", asistencia: 20, inasistencia: 10 },
+];
+
+const asistenciaTotal = [
+  { nombre: "Rodrigo Schnettler", asistencia: 155, inasistencia: 0 },
+  { nombre: "Marcelo Salazar", asistencia: 153, inasistencia: 2 },
+  { nombre: "Rocío Alvarado", asistencia: 148, inasistencia: 7 },
+  { nombre: "Nataly Schadow", asistencia: 143, inasistencia: 12 },
+  { nombre: "Tomás Gárate", asistencia: 141, inasistencia: 14 },
+  { nombre: "Antonio Horn", asistencia: 130, inasistencia: 25 },
+  { nombre: "Juan Godoy", asistencia: 116, inasistencia: 39 },
+];
+
+const remuneraciones = [
+  { nombre: "Tomás Gárate", monto: 279985493 },
+  { nombre: "Marcelo Salazar", monto: 39325196 },
+  { nombre: "Nataly Schadow", monto: 39325196 },
+  { nombre: "Rodrigo Schnettler", monto: 39325196 },
+  { nombre: "Juan Godoy", monto: 39325196 },
+  { nombre: "Rocío Alvarado", monto: 39325196 },
+  { nombre: "Antonio Horn", monto: 39070986 },
+];
+
+const asignaciones = [
+  { nombre: "Antonio Horn", utilizadas: 17416827, noUtilizadas: 17533973 },
+  { nombre: "Nataly Schadow", utilizadas: 20627200, noUtilizadas: 14323600 },
+  { nombre: "Marcelo Salazar", utilizadas: 24323000, noUtilizadas: 10627800 },
+  { nombre: "Rocío Alvarado", utilizadas: 26706552, noUtilizadas: 8244248 },
+  { nombre: "Juan Godoy", utilizadas: 27612400, noUtilizadas: 7338400 },
+  { nombre: "Rodrigo Schnettler", utilizadas: 31139600, noUtilizadas: 3811200 },
+];
+
+const puntosVarios = [
+  { nombre: "Rodrigo Schnettler", puntos: 208 },
+  { nombre: "Marcelo Salazar", puntos: 155 },
+  { nombre: "Juan Godoy", puntos: 111 },
+  { nombre: "Antonio Horn", puntos: 85 },
+  { nombre: "Rocío Alvarado", puntos: 56 },
+  { nombre: "Nataly Schadow", puntos: 47 },
 ];
 
 export default function Home() {
@@ -61,7 +108,6 @@ export default function Home() {
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Tus Políticos</h1>
 
-      {/* Navegación principal */}
       <div className="flex flex-wrap gap-2">
         {sections.map((section) => (
           <Button
@@ -74,7 +120,6 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Sección: Comparar por Comuna */}
       {selectedSection === "Comparar por Comuna" && (
         <>
           <div className="flex gap-2">
@@ -103,7 +148,6 @@ export default function Home() {
         </>
       )}
 
-      {/* Sección: Alcaldes */}
       {selectedSection === "Alcaldes" && (
         <Card>
           <CardContent>
@@ -115,7 +159,6 @@ export default function Home() {
         </Card>
       )}
 
-      {/* Sección: Concejales */}
       {selectedSection === "Concejales" && (
         <Card>
           <CardContent>
@@ -138,6 +181,78 @@ export default function Home() {
                 ))}
               </tbody>
             </table>
+          </CardContent>
+        </Card>
+      )}
+
+      {["Asistencia Ordinaria", "Asistencia Extraordinaria", "Asistencia Total"].includes(selectedSection) && (
+        <Card>
+          <CardContent className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                layout="vertical"
+                data={
+                  selectedSection === "Asistencia Ordinaria"
+                    ? asistenciaOrdinaria
+                    : selectedSection === "Asistencia Extraordinaria"
+                    ? asistenciaExtraordinaria
+                    : asistenciaTotal
+                }
+                margin={{ top: 20, right: 20, bottom: 20, left: 100 }}
+              >
+                <XAxis type="number" />
+                <YAxis dataKey="nombre" type="category" />
+                <Tooltip />
+                <Bar dataKey="asistencia" stackId="a" fill="#86efac" name="Asistencia" />
+                <Bar dataKey="inasistencia" stackId="a" fill="#fca5a5" name="Inasistencia" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {selectedSection === "Remuneraciones" && (
+        <Card>
+          <CardContent className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={remuneraciones} margin={{ left: 100 }}>
+                <XAxis type="number" />
+                <YAxis dataKey="nombre" type="category" />
+                <Tooltip />
+                <Bar dataKey="monto" fill="#06b6d4" name="Remuneración Bruta" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {selectedSection === "Asignaciones" && (
+        <Card>
+          <CardContent className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={asignaciones} margin={{ left: 100 }}>
+                <XAxis type="number" />
+                <YAxis dataKey="nombre" type="category" />
+                <Tooltip />
+                <Bar dataKey="utilizadas" stackId="a" fill="#86efac" name="Utilizadas" />
+                <Bar dataKey="noUtilizadas" stackId="a" fill="#f0f0f0" name="No utilizadas" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {selectedSection === "Puntos Varios" && (
+        <Card>
+          <CardContent className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={puntosVarios} margin={{ left: 100 }}>
+                <XAxis type="number" />
+                <YAxis dataKey="nombre" type="category" />
+                <Tooltip />
+                <Bar dataKey="puntos" fill="#a78bfa" name="Puntos varios" />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       )}
