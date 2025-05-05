@@ -37,30 +37,13 @@ const comunasMunicipales = [
       { nombre: "Juan Godoy", monto: 39325196 },
       { nombre: "Rocío Alvarado", monto: 39325196 },
       { nombre: "Antonio Horn", monto: 39070986 },
-    ],
-    asignaciones: [
-      { nombre: "Antonio Horn", utilizadas: 17416827, noUtilizadas: 17533973 },
-      { nombre: "Nataly Schadow", utilizadas: 20627200, noUtilizadas: 14323600 },
-      { nombre: "Marcelo Salazar", utilizadas: 24323000, noUtilizadas: 10627800 },
-      { nombre: "Rocío Alvarado", utilizadas: 26706552, noUtilizadas: 8244248 },
-      { nombre: "Juan Godoy", utilizadas: 27612400, noUtilizadas: 7338400 },
-      { nombre: "Rodrigo Schnettler", utilizadas: 31139600, noUtilizadas: 3811200 },
-    ],
-    puntosVarios: [
-      { nombre: "Rodrigo Schnettler", puntos: 208 },
-      { nombre: "Marcelo Salazar", puntos: 155 },
-      { nombre: "Juan Godoy", puntos: 111 },
-      { nombre: "Antonio Horn", puntos: 85 },
-      { nombre: "Rocío Alvarado", puntos: 56 },
-      { nombre: "Nataly Schadow", puntos: 47 },
-    ],
+    ]
   },
 ];
 
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
   const [selectedComuna, setSelectedComuna] = useState("Puerto Varas");
-  const [municipalTab, setMunicipalTab] = useState("Remuneraciones");
 
   const comuna = comunasMunicipales.find((c) => c.nombre === selectedComuna);
 
@@ -137,52 +120,17 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <div className="flex flex-wrap gap-2">
-                {["Remuneraciones", "Asignaciones", "Puntos Varios"].map((tab) => (
-                  <Button
-                    key={tab}
-                    onClick={() => setMunicipalTab(tab)}
-                    variant={municipalTab === tab ? "default" : "outline"}
-                  >
-                    {tab}
-                  </Button>
-                ))}
-              </div>
-
               <Card>
                 <CardContent className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    {municipalTab === "Remuneraciones" ? (
-                      <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
-                        <XAxis type="number" />
-                        <YAxis dataKey="nombre" type="category" />
-                        <Tooltip />
-                        <Bar dataKey="monto" fill="#06b6d4">
-                          <LabelList dataKey="monto" position="right" />
-                        </Bar>
-                      </BarChart>
-                    ) : municipalTab === "Asignaciones" ? (
-                      <BarChart layout="vertical" data={comuna.asignaciones} margin={{ left: 100 }}>
-                        <XAxis type="number" />
-                        <YAxis dataKey="nombre" type="category" />
-                        <Tooltip />
-                        <Bar dataKey="utilizadas" stackId="a" fill="#86efac">
-                          <LabelList dataKey="utilizadas" position="right" />
-                        </Bar>
-                        <Bar dataKey="noUtilizadas" stackId="a" fill="#f0f0f0">
-                          <LabelList dataKey="noUtilizadas" position="right" />
-                        </Bar>
-                      </BarChart>
-                    ) : (
-                      <BarChart layout="vertical" data={comuna.puntosVarios} margin={{ left: 100 }}>
-                        <XAxis type="number" />
-                        <YAxis dataKey="nombre" type="category" />
-                        <Tooltip />
-                        <Bar dataKey="puntos" fill="#a78bfa">
-                          <LabelList dataKey="puntos" position="right" />
-                        </Bar>
-                      </BarChart>
-                    )}
+                    <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
+                      <XAxis type="number" />
+                      <YAxis dataKey="nombre" type="category" />
+                      <Tooltip />
+                      <Bar dataKey="monto" fill="#06b6d4">
+                        <LabelList dataKey="monto" position="right" />
+                      </Bar>
+                    </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
