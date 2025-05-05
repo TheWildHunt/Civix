@@ -61,9 +61,18 @@ function periodoLabel(año: string): string {
   return "";
 }
 function Alcaldes2016() {
-  const [alcaldes, setAlcaldes] = useState<{ Candidatos: string; Votos: string; Estado?: string }[]>([]);
-  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
-  const [asc, setAsc] = useState(true);
+	const datosOrdenados = [...alcaldes].sort((a, b) => {
+  if (orden === "nombre") {
+    return asc
+      ? a.Candidatos.localeCompare(b.Candidatos)
+      : b.Candidatos.localeCompare(a.Candidatos);
+  } else if (orden === "votos") {
+    const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
+    const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
+    return asc ? votosA - votosB : votosB - votosA;
+  }
+  return 0;
+});
 
   useEffect(() => {
     fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes")
@@ -122,10 +131,18 @@ function Alcaldes2016() {
 }
 
 function Concejales2016() {
-  const [concejales, setConcejales] = useState<{ Candidatos: string; Votos: string; Estado?: string }[]>([]);
-  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
-  const [asc, setAsc] = useState(true);
-
+  const datosOrdenados = [...concejales].sort((a, b) => {
+  if (orden === "nombre") {
+    return asc
+      ? a.Candidatos.localeCompare(b.Candidatos)
+      : b.Candidatos.localeCompare(a.Candidatos);
+  } else if (orden === "votos") {
+    const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
+    const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
+    return asc ? votosA - votosB : votosB - votosA;
+  }
+  return 0;
+});
   useEffect(() => {
     fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Concejales")
       .then((res) => res.json())
