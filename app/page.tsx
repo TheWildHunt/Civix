@@ -10,7 +10,6 @@ const sections = [
   "Diputados",
   "Gobierno Regional",
   "Concejos Municipales",
-  "Comparar por Comuna",
 ];
 
 const comunasMunicipales = [
@@ -124,11 +123,11 @@ export default function Home() {
                 <CardContent className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
-                      <XAxis type="number" />
+                      <XAxis type="number" hide />
                       <YAxis dataKey="nombre" type="category" />
-                      <Tooltip />
+                      <Tooltip formatter={(value) => typeof value === 'number' ? value.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }) : value} />
                       <Bar dataKey="monto" fill="#06b6d4">
-                        <LabelList dataKey="monto" position="right" />
+                        <LabelList dataKey="monto" position="right" formatter={(value) => typeof value === 'number' ? value.toLocaleString() : value} />
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
@@ -138,6 +137,11 @@ export default function Home() {
           )}
         </>
       )}
+
+      {selectedSection !== "Concejos Municipales" && (
+        <div className="text-gray-500 italic">Sección aún en desarrollo.</div>
+      )}
     </div>
   );
 }
+
