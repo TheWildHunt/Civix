@@ -57,7 +57,7 @@ const comunasMunicipales = [
   },
 ];
 
-// Convierte el año clave en su rango textual
+// Convierte clave de año a rango
 function periodoLabel(año: string): string {
   if (año === "2016") return "2016–2021";
   if (año === "2021") return "2021–2024";
@@ -66,24 +66,23 @@ function periodoLabel(año: string): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Componente para mostrar Alcaldes 2016–2021 desde Google Sheets
+// Componente para Alcaldes (2016–2021)
 function Alcaldes2016({ comuna }: { comuna: string }) {
-  const [alcaldes, setAlcaldes] = useState<{ Candidatos: string; Votos: string; Estado?: string; Comuna?: string }[]>([]);
+  const [alcaldes, setAlcaldes] = useState<
+    { Candidatos: string; Votos: string; Estado?: string; Comuna?: string }[]
+  >([]);
   const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
   const [asc, setAsc] = useState(true);
 
   useEffect(() => {
-    fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes")
+    fetch(
+      "https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes"
+    )
       .then((res) => res.json())
       .then((data) => setAlcaldes(data));
   }, []);
 
-  // Filtra por comuna (si tu hoja tiene esa columna)
-  const filtrados = comuna
-    ? alcaldes.filter((a) => a.Comuna === comuna)
-    : alcaldes;
-
-  // Orden dinámico
+  const filtrados = alcaldes.filter((a) => a.Comuna === comuna);
   const datosOrdenados = [...filtrados].sort((a, b) => {
     if (orden === "nombre") {
       return asc
@@ -105,13 +104,19 @@ function Alcaldes2016({ comuna }: { comuna: string }) {
           <tr className="border-b bg-gray-200 dark:bg-gray-700">
             <th
               className="py-2 cursor-pointer"
-              onClick={() => { setOrden("nombre"); setAsc(!asc); }}
+              onClick={() => {
+                setOrden("nombre");
+                setAsc(!asc);
+              }}
             >
               Candidato {orden === "nombre" && (asc ? "▲" : "▼")}
             </th>
             <th
               className="py-2 cursor-pointer"
-              onClick={() => { setOrden("votos"); setAsc(!asc); }}
+              onClick={() => {
+                setOrden("votos");
+                setAsc(!asc);
+              }}
             >
               Votos {orden === "votos" && (asc ? "▲" : "▼")}
             </th>
@@ -120,7 +125,10 @@ function Alcaldes2016({ comuna }: { comuna: string }) {
         </thead>
         <tbody>
           {datosOrdenados.map((a) => (
-            <tr key={a.Candidatos} className="border-b even:bg-gray-100 dark:even:bg-gray-800">
+            <tr
+              key={a.Candidatos}
+              className="border-b even:bg-gray-100 dark:even:bg-gray-800"
+            >
               <td className="py-2 font-medium">{a.Candidatos}</td>
               <td className="py-2">{a.Votos}</td>
               <td className="py-2">
@@ -141,22 +149,23 @@ function Alcaldes2016({ comuna }: { comuna: string }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Componente para mostrar Concejales 2016–2021 desde Google Sheets
+// Componente para Concejales (2016–2021)
 function Concejales2016({ comuna }: { comuna: string }) {
-  const [concejales, setConcejales] = useState<{ Candidatos: string; Votos: string; Estado?: string; Comuna?: string }[]>([]);
+  const [concejales, setConcejales] = useState<
+    { Candidatos: string; Votos: string; Estado?: string; Comuna?: string }[]
+  >([]);
   const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
   const [asc, setAsc] = useState(true);
 
   useEffect(() => {
-    fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Concejales")
+    fetch(
+      "https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Concejales"
+    )
       .then((res) => res.json())
       .then((data) => setConcejales(data));
   }, []);
 
-  const filtrados = comuna
-    ? concejales.filter((c) => c.Comuna === comuna)
-    : concejales;
-
+  const filtrados = concejales.filter((c) => c.Comuna === comuna);
   const datosOrdenados = [...filtrados].sort((a, b) => {
     if (orden === "nombre") {
       return asc
@@ -172,19 +181,27 @@ function Concejales2016({ comuna }: { comuna: string }) {
 
   return (
     <div className="w-full max-w-4xl space-y-4">
-      <h2 className="text-2xl font-bold text-center">Elección Concejales 2016–2021</h2>
+      <h2 className="text-2xl font-bold text-center">
+        Elección Concejales 2016–2021
+      </h2>
       <table className="w-full text-sm text-center">
         <thead>
           <tr className="border-b bg-gray-200 dark:bg-gray-700">
             <th
               className="py-2 cursor-pointer"
-              onClick={() => { setOrden("nombre"); setAsc(!asc); }}
+              onClick={() => {
+                setOrden("nombre");
+                setAsc(!asc);
+              }}
             >
               Candidato {orden === "nombre" && (asc ? "▲" : "▼")}
             </th>
             <th
               className="py-2 cursor-pointer"
-              onClick={() => { setOrden("votos"); setAsc(!asc); }}
+              onClick={() => {
+                setOrden("votos");
+                setAsc(!asc);
+              }}
             >
               Votos {orden === "votos" && (asc ? "▲" : "▼")}
             </th>
@@ -193,7 +210,10 @@ function Concejales2016({ comuna }: { comuna: string }) {
         </thead>
         <tbody>
           {datosOrdenados.map((c) => (
-            <tr key={c.Candidatos} className="border-b even:bg-gray-100 dark:even:bg-gray-800">
+            <tr
+              key={c.Candidatos}
+              className="border-b even:bg-gray-100 dark:even:bg-gray-800"
+            >
               <td className="py-2 font-medium">{c.Candidatos}</td>
               <td className="py-2">{c.Votos}</td>
               <td className="py-2">
@@ -216,22 +236,41 @@ function Concejales2016({ comuna }: { comuna: string }) {
 // ─────────────────────────────────────────────────────────────────────
 // Componente principal
 export default function Home() {
-  const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
+  const [selectedSection, setSelectedSection] = useState(
+    "Concejos Municipales"
+  );
   const [selectedComuna, setSelectedComuna] = useState("Puerto Varas");
   const [selectedAnio, setSelectedAnio] = useState("2021");
   const [darkMode, setDarkMode] = useState(true);
 
-  // Estados para filtros jerárquicos en Elecciones
+  // Filtros jerárquicos estáticos para Elecciones
   const [selectedRegion, setSelectedRegion] = useState("Los Lagos");
-  const [selectedDistrict, setSelectedDistrict] = useState("1");
+  const [selectedDistrict, setSelectedDistrict] = useState("25");
   const [selectedProvince, setSelectedProvince] = useState("Llanquihue");
   const [selectedComunaElec, setSelectedComunaElec] = useState("Puerto Varas");
+  const [selectedEstablecimientos, setSelectedEstablecimientos] = useState<
+    string[]
+  >([]);
+  const [selectedTipoEleccion, setSelectedTipoEleccion] = useState("Alcalde");
 
-  // Opciones de ejemplo (puedes cargarlas dinámicamente si prefieres)
-  const regiones = ["Los Lagos", "Biobío", "Araucanía"];
-  const distritos = ["1", "2", "3"];
-  const provincias = ["Llanquihue", "Osorno", "Chiloé"];
-  const comunasElec = ["Puerto Varas", "Puerto Montt", "Castro"];
+  const regiones = ["Los Lagos"];
+  const distritos = ["25"];
+  const provincias = ["Llanquihue"];
+  const comunasElec = ["Puerto Varas"];
+  const establecimientos = [
+    "Hospital Puerto Varas",
+    "Escuela Básica Puerto Varas",
+    "CESFAM Puerto Varas",
+  ];
+  const tiposEleccion = [
+    "Alcalde",
+    "Concejal",
+    "Concejero Regional",
+    "Gobernador",
+    "Diputado",
+    "Senador",
+    "Presidente",
+  ];
 
   // Persistir modo oscuro
   useEffect(() => {
@@ -242,20 +281,36 @@ export default function Home() {
     localStorage.setItem("modoOscuro", String(darkMode));
   }, [darkMode]);
 
-  const comunaData = comunasMunicipales.find((c) => c.nombre === selectedComuna);
+  const comunaData = comunasMunicipales.find(
+    (c) => c.nombre === selectedComuna
+  );
   const periodo = comunaData?.periodos[selectedAnio];
 
   return (
-    <div className={`min-h-screen p-6 space-y-6 flex flex-col items-center transition-colors ${
+    <div
+      className={`min-h-screen p-6 space-y-6 flex flex-col items-center transition-colors ${
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
-      }`}>
+      }`}
+    >
+      {/* ───────────────────────────────────────────────────── */}
       <div className="flex justify-between w-full max-w-5xl items-center">
-        <h1 className="text-5xl font-extrabold tracking-wide text-blue-700 dark:text-blue-300">CIVIX</h1>
-        <Button onClick={() => setDarkMode(!darkMode)} variant="outline" className="ml-4 rounded-full">
-          {darkMode ? <Sun className="w-5 h-5 text-yellow-400"/> : <Moon className="w-5 h-5 text-gray-900"/>}
+        <h1 className="text-5xl font-extrabold text-blue-700 dark:text-blue-300">
+          CIVIX
+        </h1>
+        <Button
+          onClick={() => setDarkMode(!darkMode)}
+          variant="outline"
+          className="ml-4 rounded-full"
+        >
+          {darkMode ? (
+            <Sun className="w-5 h-5 text-yellow-400" />
+          ) : (
+            <Moon className="w-5 h-5 text-gray-900" />
+          )}
         </Button>
       </div>
 
+      {/* ───────────────────────────────────────────────────── */}
       <div className="flex flex-wrap justify-center gap-4">
         {sections.map((section) => (
           <Button
@@ -271,29 +326,36 @@ export default function Home() {
         ))}
       </div>
 
+      {/* ───────────────────────────────────────────────────── */}
       {selectedSection === "Concejos Municipales" && (
         <>
           {/* Filtros Comuna / Período */}
           <div className="flex flex-col md:flex-row gap-6 w-full max-w-5xl">
             <div className="flex-1 space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Selecciona una comuna</label>
+                <label className="block text-sm font-medium mb-1">
+                  Selecciona una comuna
+                </label>
                 <select
                   value={selectedComuna}
                   onChange={(e) => setSelectedComuna(e.target.value)}
-                  className="w-full bg-white text-black border rounded-xl px-3 py-2 text-sm shadow-sm focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                  className="w-full bg-white text-black border rounded-xl px-3 py-2 text-sm shadow-sm focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white"
                 >
-                  {comunasMunicipales.map((com) => (
-                    <option key={com.nombre} value={com.nombre}>{com.nombre}</option>
+                  {comunasMunicipales.map((c) => (
+                    <option key={c.nombre} value={c.nombre}>
+                      {c.nombre}
+                    </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Selecciona un período</label>
+                <label className="block text-sm font-medium mb-1">
+                  Selecciona un período
+                </label>
                 <select
                   value={selectedAnio}
                   onChange={(e) => setSelectedAnio(e.target.value)}
-                  className="w-full bg-white text-black border rounded-xl px-3 py-2 text-sm shadow-sm focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                  className="w-full bg-white text-black border rounded-xl px-3 py-2 text-sm shadow-sm focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white"
                 >
                   <option value="2016">2016–2021</option>
                   <option value="2021">2021–2024</option>
@@ -302,8 +364,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* Datos Municipales */}
+          {/* Datos Concejos Municipales */}
           <div className="flex flex-col gap-6 w-full max-w-5xl mt-6">
             {periodo && (
               <>
@@ -318,35 +379,30 @@ export default function Home() {
                     <p><strong>Partido:</strong> {periodo.alcalde.partido}</p>
                   </CardContent>
                 </Card>
-
                 <Card className="rounded-2xl shadow dark:bg-gray-800">
                   <CardContent className="p-6 text-white">
                     <h3 className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
                       <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       Concejales ({periodoLabel(selectedAnio)})
                     </h3>
-                    {periodo.concejales.length === 0 ? (
-                      <p className="text-sm italic text-gray-400 text-center">Aún no se han definido concejales para este período.</p>
-                    ) : (
-                      <table className="w-full text-sm text-center">
-                        <thead>
-                          <tr className="border-b text-white">
-                            <th className="py-2">Nombre</th>
-                            <th className="py-2">Votos</th>
-                            <th className="py-2">Partido</th>
+                    <table className="w-full text-sm text-center">
+                      <thead>
+                        <tr className="border-b text-white">
+                          <th className="py-2">Nombre</th>
+                          <th className="py-2">Votos</th>
+                          <th className="py-2">Partido</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {periodo.concejales.map((c) => (
+                          <tr key={c.nombre} className="border-b even:bg-gray-50 hover:bg-gray-100 dark:even:bg-gray-700">
+                            <td className="py-2 text-white">{c.nombre}</td>
+                            <td className="py-2 text-white">{c.votos}</td>
+                            <td className="py-2 text-white">{c.partido}</td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {periodo.concejales.map((c) => (
-                            <tr key={c.nombre} className="border-b even:bg-gray-50 hover:bg-gray-100 dark:even:bg-gray-700 dark:hover:bg-gray-600">
-                              <td className="py-2 text-white">{c.nombre}</td>
-                              <td className="py-2 text-white">{c.votos}</td>
-                              <td className="py-2 text-white">{c.partido}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
+                        ))}
+                      </tbody>
+                    </table>
                   </CardContent>
                 </Card>
               </>
@@ -355,11 +411,12 @@ export default function Home() {
         </>
       )}
 
+      {/* ───────────────────────────────────────────────────── */}
       {selectedSection === "Elecciones" && (
         <div className="w-full max-w-5xl space-y-6">
           <h2 className="text-2xl font-bold text-center">Historial de Elecciones</h2>
 
-          {/* Filtros Jerárquicos */}
+          {/* Filtros jerárquicos */}
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium mb-1">Región</label>
@@ -411,15 +468,61 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Tablas de Elecciones */}
-          <Alcaldes2016 comuna={selectedComunaElec} />
-          <Concejales2016 comuna={selectedComunaElec} />
+          {/* Tipo de votación */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Tipo de elección</label>
+            <select
+              value={selectedTipoEleccion}
+              onChange={e => setSelectedTipoEleccion(e.target.value)}
+              className="w-full px-3 py-2 border rounded-xl dark:bg-gray-800 dark:text-white"
+            >
+              {tiposEleccion.map(t => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Establecimientos (multi-select) */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Establecimientos</label>
+            <select
+              multiple
+              value={selectedEstablecimientos}
+              onChange={e => setSelectedEstablecimientos(Array.from(e.target.selectedOptions, o => o.value))}
+              className="w-full px-3 py-2 border rounded-xl h-32 dark:bg-gray-800 dark:text-white"
+            >
+              {establecimientos.map(est => (
+                <option key={est} value={est}>{est}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Contenido según tipo de votación */}
+          {selectedTipoEleccion === "Alcalde" && (
+            <Alcaldes2016 comuna={selectedComunaElec}/>
+          )}
+          {selectedTipoEleccion === "Concejal" && (
+            <Concejales2016 comuna={selectedComunaElec}/>
+          )}
+          {[
+            "Concejero Regional",
+            "Gobernador",
+            "Diputado",
+            "Senador",
+            "Presidente"
+          ].includes(selectedTipoEleccion) && (
+            <p className="italic text-center mt-4">
+              Sección de <strong>{selectedTipoEleccion}</strong> en desarrollo.
+            </p>
+          )}
         </div>
       )}
 
-      {selectedSection !== "Concejos Municipales" && selectedSection !== "Elecciones" && (
-        <div className="text-gray-500 italic">Sección aún en desarrollo.</div>
-      )}
+      {/* ───────────────────────────────────────────────────── */}
+      {selectedSection !== "Concejos Municipales" &&
+        selectedSection !== "Elecciones" && (
+          <div className="text-gray-500 italic">Sección aún en desarrollo.</div>
+        )}
     </div>
   );
 }
