@@ -60,19 +60,11 @@ function periodoLabel(año: string): string {
   if (año === "2025") return "2024–2028";
   return "";
 }
+
 function Alcaldes2016() {
-	const datosOrdenados = [...alcaldes].sort((a, b) => {
-  if (orden === "nombre") {
-    return asc
-      ? a.Candidatos.localeCompare(b.Candidatos)
-      : b.Candidatos.localeCompare(a.Candidatos);
-  } else if (orden === "votos") {
-    const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
-    const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
-    return asc ? votosA - votosB : votosB - votosA;
-  }
-  return 0;
-});
+  const [alcaldes, setAlcaldes] = useState<{ Candidatos: string; Votos: string; Estado?: string }[]>([]);
+  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
+  const [asc, setAsc] = useState(true);
 
   useEffect(() => {
     fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes")
@@ -82,9 +74,13 @@ function Alcaldes2016() {
 
   const datosOrdenados = [...alcaldes].sort((a, b) => {
     if (orden === "nombre") {
-      return asc ? a.Candidatos.localeCompare(b.Candidatos) : b.Candidatos.localeCompare(a.Candidatos);
+      return asc
+        ? a.Candidatos.localeCompare(b.Candidatos)
+        : b.Candidatos.localeCompare(a.Candidatos);
     } else if (orden === "votos") {
-      return asc ? Number(a.Votos) - Number(b.Votos) : Number(b.Votos) - Number(a.Votos);
+      const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
+      const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
+      return asc ? votosA - votosB : votosB - votosA;
     }
     return 0;
   });
@@ -117,7 +113,9 @@ function Alcaldes2016() {
               <td className="py-2">{a.Votos}</td>
               <td className="py-2">
                 {a.Estado?.toLowerCase() === "electo" ? (
-                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">Electo 🗳️</span>
+                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">
+                    Electo 🗳️
+                  </span>
                 ) : (
                   <span className="text-gray-500 text-xs">No electo</span>
                 )}
@@ -131,18 +129,10 @@ function Alcaldes2016() {
 }
 
 function Concejales2016() {
-  const datosOrdenados = [...concejales].sort((a, b) => {
-  if (orden === "nombre") {
-    return asc
-      ? a.Candidatos.localeCompare(b.Candidatos)
-      : b.Candidatos.localeCompare(a.Candidatos);
-  } else if (orden === "votos") {
-    const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
-    const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
-    return asc ? votosA - votosB : votosB - votosA;
-  }
-  return 0;
-});
+  const [concejales, setConcejales] = useState<{ Candidatos: string; Votos: string; Estado?: string }[]>([]);
+  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
+  const [asc, setAsc] = useState(true);
+
   useEffect(() => {
     fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Concejales")
       .then((res) => res.json())
@@ -151,9 +141,13 @@ function Concejales2016() {
 
   const datosOrdenados = [...concejales].sort((a, b) => {
     if (orden === "nombre") {
-      return asc ? a.Candidatos.localeCompare(b.Candidatos) : b.Candidatos.localeCompare(a.Candidatos);
+      return asc
+        ? a.Candidatos.localeCompare(b.Candidatos)
+        : b.Candidatos.localeCompare(a.Candidatos);
     } else if (orden === "votos") {
-      return asc ? Number(a.Votos) - Number(b.Votos) : Number(b.Votos) - Number(a.Votos);
+      const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
+      const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
+      return asc ? votosA - votosB : votosB - votosA;
     }
     return 0;
   });
@@ -186,7 +180,9 @@ function Concejales2016() {
               <td className="py-2">{c.Votos}</td>
               <td className="py-2">
                 {c.Estado?.toLowerCase() === "electo" ? (
-                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">Electo 🗳️</span>
+                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">
+                    Electo 🗳️
+                  </span>
                 ) : (
                   <span className="text-gray-500 text-xs">No electo</span>
                 )}
@@ -198,6 +194,7 @@ function Concejales2016() {
     </div>
   );
 }
+
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
   const [selectedComuna, setSelectedComuna] = useState("Puerto Varas");
@@ -217,10 +214,16 @@ export default function Home() {
   const periodo = comuna?.periodos[selectedAnio];
 
   return (
-    <div className={`min-h-screen p-6 space-y-6 flex flex-col items-center transition-colors ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"}`}>
+    <div
+      className={`min-h-screen p-6 space-y-6 flex flex-col items-center transition-colors ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
+      }`}
+    >
       <div className="flex justify-between w-full max-w-5xl items-center">
-        <h1 className="text-5xl font-extrabold tracking-wide text-center text-blue-700 dark:text-blue-300">CIVIX</h1>
-        <Button onClick={() => setDarkMode(!darkMode)} className="ml-4 rounded-full" variant="outline">
+        <h1 className="text-5xl font-extrabold tracking-wide text-center text-blue-700 dark:text-blue-300">
+          CIVIX
+        </h1>
+        <Button onClick={() => setDarkMode(!darkMode)} variant="outline" className="ml-4 rounded-full">
           {darkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-900" />}
         </Button>
       </div>
@@ -231,7 +234,9 @@ export default function Home() {
             key={section}
             onClick={() => setSelectedSection(section)}
             variant={selectedSection === section ? "default" : "outline"}
-            className={`rounded-xl px-6 py-2 text-base ${selectedSection !== section && darkMode ? "text-black" : ""}`}
+            className={`rounded-xl px-6 py-2 text-base ${
+              selectedSection !== section && darkMode ? "text-black" : ""
+            }`}
           >
             {section}
           </Button>
@@ -259,7 +264,6 @@ export default function Home() {
                   ))}
                 </select>
               </div>
-
               <div>
                 <label htmlFor="anio-select" className="block text-sm font-medium mb-1">
                   Selecciona un período
@@ -291,7 +295,6 @@ export default function Home() {
                     <p><strong>Partido:</strong> {periodo.alcalde.partido}</p>
                   </CardContent>
                 </Card>
-
                 <Card className="rounded-2xl shadow dark:bg-gray-800">
                   <CardContent className="p-6 text-white">
                     <h3 className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
