@@ -80,7 +80,7 @@ export default function Home() {
                 <CardContent>
                   <h3 className="text-lg font-semibold mb-2">Alcalde (2021–2024)</h3>
                   <p><strong>Nombre:</strong> {comuna.alcalde.nombre}</p>
-                  <p><strong>Votos:</strong> {comuna.alcalde.votos.toLocaleString()}</p>
+                  <p><strong>Votos:</strong> {comuna.alcalde.votos}</p>
                   <p><strong>Partido:</strong> {comuna.alcalde.partido}</p>
                 </CardContent>
               </Card>
@@ -100,7 +100,7 @@ export default function Home() {
                       {comuna.concejales.map((c) => (
                         <tr key={c.nombre} className="border-b hover:bg-gray-50">
                           <td className="py-2">{c.nombre}</td>
-                          <td className="py-2">{c.votos.toLocaleString()}</td>
+                          <td className="py-2">{c.votos}</td>
                           <td className="py-2">{c.partido}</td>
                         </tr>
                       ))}
