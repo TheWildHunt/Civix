@@ -18,11 +18,7 @@ const comunasMunicipales = [
     nombre: "Puerto Varas",
     periodos: {
       "2016": {
-        alcalde: {
-          nombre: "Ramón Bahamonde Cea",
-          votos: 5659,
-          partido: "Independiente",
-        },
+        alcalde: { nombre: "Ramón Bahamonde Cea", votos: 5659, partido: "Independiente" },
         concejales: [
           { nombre: "Renato Aichele Horn", votos: 1624, partido: "Renovación Nacional" },
           { nombre: "Javier Antonio Aburto Oyarzun", votos: 1298, partido: "Democracia Cristiana" },
@@ -30,14 +26,10 @@ const comunasMunicipales = [
           { nombre: "Patricio Cortés Jones", votos: 777, partido: "Independiente" },
           { nombre: "Rosa Esther Benavides Mundaca", votos: 775, partido: "Democracia Cristiana" },
           { nombre: "Marcelo Salazar Vallejos", votos: 529, partido: "Unión Demócrata Independiente" },
-        ]
+        ],
       },
       "2021": {
-        alcalde: {
-          nombre: "Tomás Gárate Silva",
-          votos: 5677,
-          partido: "Independiente",
-        },
+        alcalde: { nombre: "Tomás Gárate Silva", votos: 5677, partido: "Independiente" },
         concejales: [
           { nombre: "Rocío Alvarado Díaz", votos: 3980, partido: "Independiente" },
           { nombre: "Juan Patricio Godoy", votos: 2516, partido: "Independiente" },
@@ -45,14 +37,10 @@ const comunasMunicipales = [
           { nombre: "Antonio Horn Cruz", votos: 953, partido: "Renovación Nacional" },
           { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "Democracia Cristiana" },
           { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "Partido Socialista de Chile" },
-        ]
+        ],
       },
       "2025": {
-        alcalde: {
-          nombre: "Tomás Gárate Silva",
-          votos: 0,
-          partido: "Independiente",
-        },
+        alcalde: { nombre: "Tomás Gárate Silva", votos: 0, partido: "Independiente" },
         concejales: [
           { nombre: "Tamara Rammsy Sánchez", votos: 0, partido: "Independiente" },
           { nombre: "Nicolás Yunge Jurgensen", votos: 0, partido: "Independiente" },
@@ -60,10 +48,10 @@ const comunasMunicipales = [
           { nombre: "Rodrigo Schnettler Weisser", votos: 0, partido: "Democracia Cristiana" },
           { nombre: "Antonio Horn Cruz", votos: 0, partido: "Renovación Nacional" },
           { nombre: "Blanca Bongain Acevedo", votos: 0, partido: "Independiente" },
-        ]
-      }
-    }
-  }
+        ],
+      },
+    },
+  },
 ];
 
 function periodoLabel(año: string): string {
@@ -72,11 +60,10 @@ function periodoLabel(año: string): string {
   if (año === "2025") return "2024–2028";
   return "";
 }
-
 function Alcaldes2016() {
-  const [alcaldes, setAlcaldes] = useState<
-    { Candidatos: string; Votos: string; Estado?: string }[]
-  >([]);
+  const [alcaldes, setAlcaldes] = useState<{ Candidatos: string; Votos: string; Estado?: string }[]>([]);
+  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
+  const [asc, setAsc] = useState(true);
 
   useEffect(() => {
     fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes")
@@ -84,19 +71,38 @@ function Alcaldes2016() {
       .then((data) => setAlcaldes(data));
   }, []);
 
+  const datosOrdenados = [...alcaldes].sort((a, b) => {
+    if (orden === "nombre") {
+      return asc ? a.Candidatos.localeCompare(b.Candidatos) : b.Candidatos.localeCompare(a.Candidatos);
+    } else if (orden === "votos") {
+      return asc ? Number(a.Votos) - Number(b.Votos) : Number(b.Votos) - Number(a.Votos);
+    }
+    return 0;
+  });
+
   return (
     <div className="w-full max-w-4xl space-y-4">
       <h2 className="text-2xl font-bold text-center">Elección Alcalde 2016–2021</h2>
       <table className="w-full text-sm text-center">
         <thead>
           <tr className="border-b bg-gray-200 dark:bg-gray-700">
-            <th className="py-2">Candidato</th>
-            <th className="py-2">Votos</th>
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => { setOrden("nombre"); setAsc(!asc); }}
+            >
+              Candidato {orden === "nombre" && (asc ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => { setOrden("votos"); setAsc(!asc); }}
+            >
+              Votos {orden === "votos" && (asc ? "▲" : "▼")}
+            </th>
             <th className="py-2">Resultado</th>
           </tr>
         </thead>
         <tbody>
-          {alcaldes.map((a) => (
+          {datosOrdenados.map((a) => (
             <tr key={a.Candidatos} className="border-b even:bg-gray-100 dark:even:bg-gray-800">
               <td className="py-2 font-medium">{a.Candidatos}</td>
               <td className="py-2">{a.Votos}</td>
@@ -116,9 +122,9 @@ function Alcaldes2016() {
 }
 
 function Concejales2016() {
-  const [concejales, setConcejales] = useState<
-    { Candidatos: string; Votos: string; Estado?: string }[]
-  >([]);
+  const [concejales, setConcejales] = useState<{ Candidatos: string; Votos: string; Estado?: string }[]>([]);
+  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
+  const [asc, setAsc] = useState(true);
 
   useEffect(() => {
     fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Concejales")
@@ -126,19 +132,38 @@ function Concejales2016() {
       .then((data) => setConcejales(data));
   }, []);
 
+  const datosOrdenados = [...concejales].sort((a, b) => {
+    if (orden === "nombre") {
+      return asc ? a.Candidatos.localeCompare(b.Candidatos) : b.Candidatos.localeCompare(a.Candidatos);
+    } else if (orden === "votos") {
+      return asc ? Number(a.Votos) - Number(b.Votos) : Number(b.Votos) - Number(a.Votos);
+    }
+    return 0;
+  });
+
   return (
     <div className="w-full max-w-4xl space-y-4">
       <h2 className="text-2xl font-bold text-center">Elección Concejales 2016–2021</h2>
       <table className="w-full text-sm text-center">
         <thead>
           <tr className="border-b bg-gray-200 dark:bg-gray-700">
-            <th className="py-2">Candidato</th>
-            <th className="py-2">Votos</th>
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => { setOrden("nombre"); setAsc(!asc); }}
+            >
+              Candidato {orden === "nombre" && (asc ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => { setOrden("votos"); setAsc(!asc); }}
+            >
+              Votos {orden === "votos" && (asc ? "▲" : "▼")}
+            </th>
             <th className="py-2">Resultado</th>
           </tr>
         </thead>
         <tbody>
-          {concejales.map((c) => (
+          {datosOrdenados.map((c) => (
             <tr key={c.Candidatos} className="border-b even:bg-gray-100 dark:even:bg-gray-800">
               <td className="py-2 font-medium">{c.Candidatos}</td>
               <td className="py-2">{c.Votos}</td>
@@ -156,12 +181,20 @@ function Concejales2016() {
     </div>
   );
 }
-
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
   const [selectedComuna, setSelectedComuna] = useState("Puerto Varas");
   const [selectedAnio, setSelectedAnio] = useState("2021");
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("modoOscuro");
+    if (saved !== null) setDarkMode(saved === "true");
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("modoOscuro", String(darkMode));
+  }, [darkMode]);
 
   const comuna = comunasMunicipales.find((c) => c.nombre === selectedComuna);
   const periodo = comuna?.periodos[selectedAnio];
