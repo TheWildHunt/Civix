@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
 
 const sections = [
   "Senadores",
@@ -27,15 +26,6 @@ const comunasMunicipales = [
       { nombre: "Antonio Horn Cruz", votos: 953, partido: "Renovación Nacional" },
       { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "Democracia Cristiana" },
       { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "Partido Socialista de Chile" },
-    ],
-    remuneraciones: [
-      { nombre: "Tomás Gárate", monto: 279985493 },
-      { nombre: "Marcelo Salazar", monto: 39325196 },
-      { nombre: "Nataly Schadow", monto: 39325196 },
-      { nombre: "Rodrigo Schnettler", monto: 39325196 },
-      { nombre: "Juan Godoy", monto: 39325196 },
-      { nombre: "Rocío Alvarado", monto: 39325196 },
-      { nombre: "Antonio Horn", monto: 39070986 },
     ]
   },
 ];
@@ -116,21 +106,6 @@ export default function Home() {
                       ))}
                     </tbody>
                   </table>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
-                      <XAxis type="number" hide />
-                      <YAxis dataKey="nombre" type="category" />
-                      <Tooltip formatter={(value: any) => typeof value === 'number' ? value.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }) : value} />
-                      <Bar dataKey="monto" fill="#06b6d4">
-                        <LabelList dataKey="monto" position="right" formatter={(value: any) => typeof value === 'number' ? value.toLocaleString() : value} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
                 </CardContent>
               </Card>
             </div>
