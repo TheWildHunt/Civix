@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Moon, Sun, Users, Vote } from "lucide-react";
@@ -10,6 +10,7 @@ const sections = [
   "Cámara de Diputados",
   "Gobierno Regional",
   "Concejos Municipales",
+  "Elecciones",
 ];
 
 const comunasMunicipales = [
@@ -72,6 +73,90 @@ function periodoLabel(año: string): string {
   return "";
 }
 
+function Alcaldes2016() {
+  const [alcaldes, setAlcaldes] = useState<
+    { Candidatos: string; Votos: string; Estado?: string }[]
+  >([]);
+
+  useEffect(() => {
+    fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes")
+      .then((res) => res.json())
+      .then((data) => setAlcaldes(data));
+  }, []);
+
+  return (
+    <div className="w-full max-w-4xl space-y-4">
+      <h2 className="text-2xl font-bold text-center">Elección Alcalde 2016–2021</h2>
+      <table className="w-full text-sm text-center">
+        <thead>
+          <tr className="border-b bg-gray-200 dark:bg-gray-700">
+            <th className="py-2">Candidato</th>
+            <th className="py-2">Votos</th>
+            <th className="py-2">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {alcaldes.map((a) => (
+            <tr key={a.Candidatos} className="border-b even:bg-gray-100 dark:even:bg-gray-800">
+              <td className="py-2 font-medium">{a.Candidatos}</td>
+              <td className="py-2">{a.Votos}</td>
+              <td className="py-2">
+                {a.Estado?.toLowerCase() === "electo" ? (
+                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">Electo 🗳️</span>
+                ) : (
+                  <span className="text-gray-500 text-xs">No electo</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function Concejales2016() {
+  const [concejales, setConcejales] = useState<
+    { Candidatos: string; Votos: string; Estado?: string }[]
+  >([]);
+
+  useEffect(() => {
+    fetch("https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Concejales")
+      .then((res) => res.json())
+      .then((data) => setConcejales(data));
+  }, []);
+
+  return (
+    <div className="w-full max-w-4xl space-y-4">
+      <h2 className="text-2xl font-bold text-center">Elección Concejales 2016–2021</h2>
+      <table className="w-full text-sm text-center">
+        <thead>
+          <tr className="border-b bg-gray-200 dark:bg-gray-700">
+            <th className="py-2">Candidato</th>
+            <th className="py-2">Votos</th>
+            <th className="py-2">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {concejales.map((c) => (
+            <tr key={c.Candidatos} className="border-b even:bg-gray-100 dark:even:bg-gray-800">
+              <td className="py-2 font-medium">{c.Candidatos}</td>
+              <td className="py-2">{c.Votos}</td>
+              <td className="py-2">
+                {c.Estado?.toLowerCase() === "electo" ? (
+                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">Electo 🗳️</span>
+                ) : (
+                  <span className="text-gray-500 text-xs">No electo</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
   const [selectedComuna, setSelectedComuna] = useState("Puerto Varas");
@@ -85,11 +170,7 @@ export default function Home() {
     <div className={`min-h-screen p-6 space-y-6 flex flex-col items-center transition-colors ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"}`}>
       <div className="flex justify-between w-full max-w-5xl items-center">
         <h1 className="text-5xl font-extrabold tracking-wide text-center text-blue-700 dark:text-blue-300">CIVIX</h1>
-        <Button
-          onClick={() => setDarkMode(!darkMode)}
-          className="ml-4 rounded-full"
-          variant="outline"
-        >
+        <Button onClick={() => setDarkMode(!darkMode)} className="ml-4 rounded-full" variant="outline">
           {darkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-900" />}
         </Button>
       </div>
@@ -196,7 +277,15 @@ export default function Home() {
         </>
       )}
 
-      {selectedSection !== "Concejos Municipales" && (
+      {selectedSection === "Elecciones" && (
+        <div className="w-full max-w-5xl space-y-6">
+          <h2 className="text-2xl font-bold text-center">Historial de Elecciones</h2>
+          <Alcaldes2016 />
+          <Concejales2016 />
+        </div>
+      )}
+
+      {selectedSection !== "Concejos Municipales" && selectedSection !== "Elecciones" && (
         <div className="text-gray-500 italic">Sección aún en desarrollo.</div>
       )}
     </div>
