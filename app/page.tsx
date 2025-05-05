@@ -5,12 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
 
-const CLPFormatter = new Intl.NumberFormat("es-CL", {
-  style: "currency",
-  currency: "CLP",
-  maximumFractionDigits: 0,
-});
-
 const sections = [
   "Senadores",
   "Diputados",
@@ -199,7 +193,7 @@ export default function Home() {
         >
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(value) => typeof value === 'number' ? CLPFormatter.format(value) : ''} />
+          <Tooltip  />
           <Bar dataKey="asistencia" stackId="a" fill="#86efac">
             <LabelList dataKey="asistencia" position="right" />
           </Bar>
@@ -211,28 +205,28 @@ export default function Home() {
         <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(value) => typeof value === 'number' ? CLPFormatter.format(value) : ''} />
+          <Tooltip  />
           <Bar dataKey="monto" fill="#06b6d4">
-            <LabelList dataKey="monto" position="right" formatter={(value: number) => CLPFormatter.format(value)} />
+            <LabelList dataKey="monto" position="right"  />
           </Bar>
         </BarChart>
       ) : municipalTab === "Asignaciones" ? (
         <BarChart layout="vertical" data={comuna.asignaciones} margin={{ left: 100 }}>
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
+          <Tooltip  />
           <Bar dataKey="utilizadas" stackId="a" fill="#86efac">
-            <LabelList dataKey="utilizadas" position="right" formatter={(value: number) => CLPFormatter.format(value)} />
+            <LabelList dataKey="utilizadas" position="right"  />
           </Bar>
           <Bar dataKey="noUtilizadas" stackId="a" fill="#f0f0f0">
-            <LabelList dataKey="noUtilizadas" position="right" formatter={(value: number) => CLPFormatter.format(value)} />
+            <LabelList dataKey="noUtilizadas" position="right"  />
           </Bar>
         </BarChart>
       ) : (
         <BarChart layout="vertical" data={comuna.puntosVarios} margin={{ left: 100 }}>
           <XAxis type="number" />
           <YAxis dataKey="nombre" type="category" />
-          <Tooltip formatter={(value: number) => CLPFormatter.format(value)} />
+          <Tooltip  />
           <Bar dataKey="puntos" fill="#a78bfa">
             <LabelList dataKey="puntos" position="right" />
           </Bar>
