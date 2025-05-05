@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Moon, Sun, Users, Vote } from "lucide-react";
 
 const sections = [
-  "Senador",
+  "Senado",
   "Cámara de Diputados",
   "Gobierno Regional",
   "Concejos Municipales",
@@ -18,17 +18,17 @@ const comunasMunicipales = [
     periodos: {
       "2016": {
         alcalde: {
-          nombre: "Ramón Bahamonde",
-          votos: 7580,
+          nombre: "Ramón Bahamonde Cea",
+          votos: 5659,
           partido: "Independiente",
         },
         concejales: [
-          { nombre: "René Villarroel", votos: 2200, partido: "RN" },
-          { nombre: "Marcelo Salazar", votos: 2100, partido: "UDI" },
-          { nombre: "Alvaro Berger", votos: 2000, partido: "PPD" },
-          { nombre: "Antonio Horn", votos: 1900, partido: "RN" },
-          { nombre: "Patricio Godoy", votos: 1850, partido: "Independiente" },
-          { nombre: "José Luis Alvarado", votos: 1800, partido: "DC" },
+          { nombre: "Renato Aichele Horn", votos: 1624, partido: "Renovación Nacional" },
+          { nombre: "Javier Antonio Aburto Oyarzun", votos: 1298, partido: "Democracia Cristiana" },
+          { nombre: "Luis Becerra Vargas", votos: 1288, partido: "Independiente" },
+          { nombre: "Patricio Cortés Jones", votos: 777, partido: "Independiente" },
+          { nombre: "Rosa Esther Benavides Mundaca", votos: 775, partido: "Democracia Cristiana" },
+          { nombre: "Marcelo Salazar Vallejos", votos: 529, partido: "Unión Demócrata Independiente" },
         ]
       },
       "2021": {
@@ -40,10 +40,10 @@ const comunasMunicipales = [
         concejales: [
           { nombre: "Rocío Alvarado Díaz", votos: 3980, partido: "Independiente" },
           { nombre: "Juan Patricio Godoy", votos: 2516, partido: "Independiente" },
-          { nombre: "Marcelo Salazar Vallejos", votos: 1009, partido: "UDI" },
-          { nombre: "Antonio Horn Cruz", votos: 953, partido: "RN" },
-          { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "DC" },
-          { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "PS" },
+          { nombre: "Marcelo Salazar Vallejos", votos: 1009, partido: "Unión Demócrata Independiente" },
+          { nombre: "Antonio Horn Cruz", votos: 953, partido: "Renovación Nacional" },
+          { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "Democracia Cristiana" },
+          { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "Partido Socialista de Chile" },
         ]
       },
       "2025": {
@@ -56,13 +56,13 @@ const comunasMunicipales = [
           { nombre: "Tamara Rammsy Sánchez", votos: 0, partido: "Independiente" },
           { nombre: "Nicolás Yunge Jurgensen", votos: 0, partido: "Independiente" },
           { nombre: "Juan Patricio Godoy", votos: 0, partido: "Independiente" },
-          { nombre: "Rodrigo Schnettler Weisser", votos: 0, partido: "DC" },
-          { nombre: "Antonio Horn Cruz", votos: 0, partido: "RN" },
+          { nombre: "Rodrigo Schnettler Weisser", votos: 0, partido: "Democracia Cristiana" },
+          { nombre: "Antonio Horn Cruz", votos: 0, partido: "Renovación Nacional" },
           { nombre: "Blanca Bongain Acevedo", votos: 0, partido: "Independiente" },
         ]
       }
     }
-  },
+  }
 ];
 
 function periodoLabel(año: string): string {
