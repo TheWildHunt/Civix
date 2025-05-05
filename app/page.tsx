@@ -1,10 +1,9 @@
-// Home.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { Moon, Sun, Users, Vote } from "lucide-react";
 
-// ─── datos estáticos ───────────────────────────────────────────────
+// ─── Datos estáticos ───────────────────────────────────────────────
 const sections = [
   "Senado",
   "Cámara de Diputados",
@@ -13,9 +12,47 @@ const sections = [
   "Elecciones",
 ];
 
-const comunasMunicipales = [ /* ...igual que antes...*/ ];
+const comunasMunicipales = [
+  {
+    nombre: "Puerto Varas",
+    periodos: {
+      "2016": {
+        alcalde: { nombre: "Ramón Bahamonde Cea", votos: 5659, partido: "Independiente" },
+        concejales: [
+          { nombre: "Renato Aichele Horn", votos: 1624, partido: "Renovación Nacional" },
+          { nombre: "Javier Antonio Aburto Oyarzun", votos: 1298, partido: "Democracia Cristiana" },
+          { nombre: "Luis Becerra Vargas", votos: 1288, partido: "Independiente" },
+          { nombre: "Patricio Cortés Jones", votos: 777, partido: "Independiente" },
+          { nombre: "Rosa Esther Benavides Mundaca", votos: 775, partido: "Democracia Cristiana" },
+          { nombre: "Marcelo Salazar Vallejos", votos: 529, partido: "Unión Demócrata Independiente" },
+        ],
+      },
+      "2021": {
+        alcalde: { nombre: "Tomás Gárate Silva", votos: 5677, partido: "Independiente" },
+        concejales: [
+          { nombre: "Rocío Alvarado Díaz", votos: 3980, partido: "Independiente" },
+          { nombre: "Juan Patricio Godoy", votos: 2516, partido: "Independiente" },
+          { nombre: "Marcelo Salazar Vallejos", votos: 1009, partido: "Unión Demócrata Independiente" },
+          { nombre: "Antonio Horn Cruz", votos: 953, partido: "Renovación Nacional" },
+          { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "Democracia Cristiana" },
+          { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "Partido Socialista de Chile" },
+        ],
+      },
+      "2025": {
+        alcalde: { nombre: "Tomás Gárate Silva", votos: 0, partido: "Independiente" },
+        concejales: [
+          { nombre: "Tamara Rammsy Sánchez", votos: 0, partido: "Independiente" },
+          { nombre: "Nicolás Yunge Jurgensen", votos: 0, partido: "Independiente" },
+          { nombre: "Juan Patricio Godoy", votos: 0, partido: "Independiente" },
+          { nombre: "Rodrigo Schnettler Weisser", votos: 0, partido: "Democracia Cristiana" },
+          { nombre: "Antonio Horn Cruz", votos: 0, partido: "Renovación Nacional" },
+          { nombre: "Blanca Bongain Acevedo", votos: 0, partido: "Independiente" },
+        ],
+      },
+    },
+  },
+];
 
-// ─── utilidades ───────────────────────────────────────────────────
 function periodoLabel(año: string): string {
   if (año === "2016") return "2016–2021";
   if (año === "2021") return "2021–2024";
@@ -23,28 +60,186 @@ function periodoLabel(año: string): string {
   return "";
 }
 
-// ─── componentes de datos ─────────────────────────────────────────
+// ─── Componentes de datos ──────────────────────────────────────────
 function Alcaldes2016({ comuna }: { comuna: string }) {
-  /* igual que antes, con orden y parseFloat(...) */
+  const [alcaldes, setAlcaldes] = useState<
+    { Candidatos: string; Votos: string; Estado?: string; Comuna?: string }[]
+  >([]);
+  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
+  const [asc, setAsc] = useState(true);
+
+  useEffect(() => {
+    fetch(
+      "https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyG1qK6ZwjimCtYJ353t3xM/Alcaldes"
+    )
+      .then((res) => res.json())
+      .then((data) => setAlcaldes(data));
+  }, []);
+
+  const filtrados = alcaldes.filter((a) => a.Comuna === comuna);
+  const datosOrdenados = [...filtrados].sort((a, b) => {
+    if (orden === "nombre") {
+      return asc
+        ? a.Candidatos.localeCompare(b.Candidatos)
+        : b.Candidatos.localeCompare(a.Candidatos);
+    } else if (orden === "votos") {
+      const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
+      const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
+      return asc ? votosA - votosB : votosB - votosA;
+    }
+    return 0;
+  });
+
+  return (
+    <div className="w-full max-w-4xl space-y-4">
+      <h2 className="text-2xl font-bold text-center">Elección Alcalde 2016–2021</h2>
+      <table className="w-full text-sm text-center">
+        <thead>
+          <tr className="border-b bg-gray-200 dark:bg-gray-700">
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => {
+                setOrden("nombre");
+                setAsc(!asc);
+              }}
+            >
+              Candidato {orden === "nombre" && (asc ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => {
+                setOrden("votos");
+                setAsc(!asc);
+              }}
+            >
+              Votos {orden === "votos" && (asc ? "▲" : "▼")}
+            </th>
+            <th className="py-2">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {datosOrdenados.map((a) => (
+            <tr
+              key={a.Candidatos}
+              className="border-b even:bg-gray-100 dark:even:bg-gray-800"
+            >
+              <td className="py-2 font-medium">{a.Candidatos}</td>
+              <td className="py-2">{a.Votos}</td>
+              <td className="py-2">
+                {a.Estado?.toLowerCase() === "electo" ? (
+                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">
+                    Electo 🗳️
+                  </span>
+                ) : (
+                  <span className="text-gray-500 text-xs">No electo</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 function Concejales2016({ comuna }: { comuna: string }) {
-  /* igual que antes, con orden y parseFloat(...) */
+  const [concejales, setConcejales] = useState<
+    { Candidatos: string; Votos: string; Estado?: string; Comuna?: string }[]
+  >([]);
+  const [orden, setOrden] = useState<"nombre" | "votos" | null>(null);
+  const [asc, setAsc] = useState(true);
+
+  useEffect(() => {
+    fetch(
+      "https://opensheet.vercel.app/16ES7-Qtc9fhptiABa9oyMyqK6ZwjimCtYJ353t3xM/Concejales"
+    )
+      .then((res) => res.json())
+      .then((data) => setConcejales(data));
+  }, []);
+
+  const filtrados = concejales.filter((c) => c.Comuna === comuna);
+  const datosOrdenados = [...filtrados].sort((a, b) => {
+    if (orden === "nombre") {
+      return asc
+        ? a.Candidatos.localeCompare(b.Candidatos)
+        : b.Candidatos.localeCompare(a.Candidatos);
+    } else if (orden === "votos") {
+      const votosA = parseFloat(a.Votos.replace(/\./g, "").replace(",", "."));
+      const votosB = parseFloat(b.Votos.replace(/\./g, "").replace(",", "."));
+      return asc ? votosA - votosB : votosB - votosA;
+    }
+    return 0;
+  });
+
+  return (
+    <div className="w-full max-w-4xl space-y-4">
+      <h2 className="text-2xl font-bold text-center">
+        Elección Concejales 2016–2021
+      </h2>
+      <table className="w-full text-sm text-center">
+        <thead>
+          <tr className="border-b bg-gray-200 dark:bg-gray-700">
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => {
+                setOrden("nombre");
+                setAsc(!asc);
+              }}
+            >
+              Candidato {orden === "nombre" && (asc ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 cursor-pointer"
+              onClick={() => {
+                setOrden("votos");
+                setAsc(!asc);
+              }}
+            >
+              Votos {orden === "votos" && (asc ? "▲" : "▼")}
+            </th>
+            <th className="py-2">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {datosOrdenados.map((c) => (
+            <tr
+              key={c.Candidatos}
+              className="border-b even:bg-gray-100 dark:even:bg-gray-800"
+            >
+              <td className="py-2 font-medium">{c.Candidatos}</td>
+              <td className="py-2">{c.Votos}</td>
+              <td className="py-2">
+                {c.Estado?.toLowerCase() === "electo" ? (
+                  <span className="bg-green-600 text-white px-2 py-1 text-xs rounded-full">
+                    Electo 🗳️
+                  </span>
+                ) : (
+                  <span className="text-gray-500 text-xs">No electo</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-// ─── componente principal ─────────────────────────────────────────
+// ─── Componente principal ─────────────────────────────────────────
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
   const [selectedComuna, setSelectedComuna] = useState("Puerto Varas");
   const [selectedAnio, setSelectedAnio] = useState("2021");
   const [darkMode, setDarkMode] = useState(true);
 
-  // elecciones
+  // Filtros para Elecciones
   const [selectedRegion] = useState("Los Lagos");
   const [selectedDistrict] = useState("25");
   const [selectedProvince] = useState("Llanquihue");
   const [selectedComunaElec, setSelectedComunaElec] = useState("Puerto Varas");
   const [selectedTipoEleccion, setSelectedTipoEleccion] = useState("Alcalde");
+  const [selectedEstablecimientos, setSelectedEstablecimientos] = useState<string[]>([]);
+
   const establecimientos = [
     "Hospital Puerto Varas",
     "Escuela Básica Puerto Varas",
@@ -68,26 +263,28 @@ export default function Home() {
     localStorage.setItem("modoOscuro", String(darkMode));
   }, [darkMode]);
 
-  const comunaData = comunasMunicipales.find(c => c.nombre === selectedComuna);
+  const comunaData = comunasMunicipales.find((c) => c.nombre === selectedComuna);
   const periodo = comunaData?.periodos[selectedAnio];
 
   return (
-    <div className={`min-h-screen p-6 flex flex-col items-center transition-colors ${
+    <div
+      className={`min-h-screen p-6 flex flex-col items-center transition-colors font-sans ${
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
-      } font-sans`}>
-      <header className="flex justify-between w-full max-w-5xl items-center mb-6">
+      }`}
+    >
+      <header className="flex justify-between w-full max-w-5xl mb-6">
         <h1 className="text-5xl font-extrabold">CIVIX</h1>
         <button
           onClick={() => setDarkMode(!darkMode)}
           className="p-2 rounded-full bg-white/20 backdrop-blur"
         >
-          {darkMode ? <Sun className="w-5 h-5 text-yellow-400"/> : <Moon className="w-5 h-5 text-gray-900"/>}
+          {darkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-900" />}
         </button>
       </header>
 
-      {/* ─── segmented control ───────────────────────────────────────── */}
+      {/* Segmented control */}
       <div className="inline-flex bg-white/20 backdrop-blur rounded-full p-1 mb-6">
-        {sections.map(sec => (
+        {sections.map((sec) => (
           <button
             key={sec}
             onClick={() => setSelectedSection(sec)}
@@ -106,7 +303,7 @@ export default function Home() {
         <div className="space-y-6 w-full max-w-5xl">
           <div className="backdrop-blur bg-white/30 dark:bg-gray-800/30 rounded-3xl shadow-xl p-6">
             <h3 className="text-lg font-semibold flex items-center gap-2">
-              <Vote className="w-5 h-5 text-blue-600"/> Alcalde ({periodoLabel(selectedAnio)})
+              <Vote className="w-5 h-5 text-blue-600" /> Alcalde ({periodoLabel(selectedAnio)})
             </h3>
             <div className="mt-4 space-y-1">
               <p><strong>Nombre:</strong> {periodo.alcalde.nombre}</p>
@@ -116,9 +313,9 @@ export default function Home() {
           </div>
           <div className="backdrop-blur bg-white/30 dark:bg-gray-800/30 rounded-3xl shadow-xl p-6">
             <h3 className="text-lg font-semibold flex items-center gap-2">
-              <Users className="w-5 h-5 text-blue-600"/> Concejales ({periodoLabel(selectedAnio)})
+              <Users className="w-5 h-5 text-blue-600" /> Concejales ({periodoLabel(selectedAnio)})
             </h3>
-            {/* tabla ordenable igual que antes */}
+            {/* Aquí tu tabla ordenable de concejales */}
           </div>
         </div>
       )}
@@ -126,98 +323,5 @@ export default function Home() {
       {selectedSection === "Elecciones" && (
         <div className="w-full max-w-5xl space-y-6">
           <h2 className="text-2xl font-bold text-center">Historial de Elecciones</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block text-sm mb-1">Región</label>
-              <select
-                disabled
-                value={selectedRegion}
-                className="w-full p-2 border rounded-xl bg-white/20 backdrop-blur"
-              >
-                <option>{selectedRegion}</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Distrito</label>
-              <select
-                disabled
-                value={selectedDistrict}
-                className="w-full p-2 border rounded-xl bg-white/20 backdrop-blur"
-              >
-                <option>{selectedDistrict}</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Provincia</label>
-              <select
-                disabled
-                value={selectedProvince}
-                className="w-full p-2 border rounded-xl bg-white/20 backdrop-blur"
-              >
-                <option>{selectedProvince}</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Comuna</label>
-              <select
-                value={selectedComunaElec}
-                onChange={e => setSelectedComunaElec(e.target.value)}
-                className="w-full p-2 border rounded-xl bg-white/20 backdrop-blur"
-              >
-                <option>{selectedComunaElec}</option>
-              </select>
-            </div>
-          </div>
 
-          <div>
-            <label className="block text-sm mb-1">Tipo de elección</label>
-            <div className="inline-flex bg-white/20 backdrop-blur rounded-full p-1">
-              {tiposEleccion.map(t => (
-                <button
-                  key={t}
-                  onClick={() => setSelectedTipoEleccion(t)}
-                  className={`px-3 py-1 text-sm rounded-full transition ${
-                    selectedTipoEleccion === t
-                      ? "bg-white bg-opacity-80 text-gray-900"
-                      : "text-white/80 hover:text-white"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm mb-1">Establecimientos</label>
-            <select
-              multiple
-              value={selectedEstablecimientos}
-              onChange={e =>
-                setSelectedEstablecimientos(
-                  Array.from(e.target.selectedOptions, o => o.value)
-                )
-              }
-              className="w-full h-32 p-2 border rounded-xl bg-white/20 backdrop-blur"
-            >
-              {establecimientos.map(est => (
-                <option key={est} value={est}>{est}</option>
-              ))}
-            </select>
-          </div>
-
-          {selectedTipoEleccion === "Alcalde" && (
-            <Alcaldes2016 comuna={selectedComunaElec}/>
-          )}
-          {selectedTipoEleccion === "Concejal" && (
-            <Concejales2016 comuna={selectedComunaElec}/>
-          )}
-          {["Concejero Regional","Gobernador","Diputado","Senador","Presidente"]
-            .includes(selectedTipoEleccion) && (
-            <p className="italic text-center">Sección en desarrollo…</p>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
+          <div className="grid grid-cols
