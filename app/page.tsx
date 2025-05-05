@@ -125,9 +125,9 @@ export default function Home() {
                     <BarChart layout="vertical" data={comuna.remuneraciones} margin={{ left: 100 }}>
                       <XAxis type="number" hide />
                       <YAxis dataKey="nombre" type="category" />
-                      <Tooltip formatter={(value) => typeof value === 'number' ? value.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }) : value} />
+                      <Tooltip formatter={(value: any) => typeof value === 'number' ? value.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' }) : value} />
                       <Bar dataKey="monto" fill="#06b6d4">
-                        <LabelList dataKey="monto" position="right" formatter={(value) => typeof value === 'number' ? value.toLocaleString() : value} />
+                        <LabelList dataKey="monto" position="right" formatter={(value: any) => typeof value === 'number' ? value.toLocaleString() : value} />
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
@@ -144,4 +144,3 @@ export default function Home() {
     </div>
   );
 }
-
