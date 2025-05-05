@@ -6,8 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Moon, Sun, Users, Vote } from "lucide-react";
 
 const sections = [
-  "Senadores",
-  "Diputados",
+  "Senador",
+  "Cámara de Diputados",
   "Gobierno Regional",
   "Concejos Municipales",
 ];
@@ -16,6 +16,21 @@ const comunasMunicipales = [
   {
     nombre: "Puerto Varas",
     periodos: {
+      "2016": {
+        alcalde: {
+          nombre: "Ramón Bahamonde",
+          votos: 7580,
+          partido: "Independiente",
+        },
+        concejales: [
+          { nombre: "René Villarroel", votos: 2200, partido: "RN" },
+          { nombre: "Marcelo Salazar", votos: 2100, partido: "UDI" },
+          { nombre: "Alvaro Berger", votos: 2000, partido: "PPD" },
+          { nombre: "Antonio Horn", votos: 1900, partido: "RN" },
+          { nombre: "Patricio Godoy", votos: 1850, partido: "Independiente" },
+          { nombre: "José Luis Alvarado", votos: 1800, partido: "DC" },
+        ]
+      },
       "2021": {
         alcalde: {
           nombre: "Tomás Gárate Silva",
@@ -25,23 +40,37 @@ const comunasMunicipales = [
         concejales: [
           { nombre: "Rocío Alvarado Díaz", votos: 3980, partido: "Independiente" },
           { nombre: "Juan Patricio Godoy", votos: 2516, partido: "Independiente" },
-          { nombre: "Marcelo Salazar Vallejos", votos: 1009, partido: "Unión Demócrata Independiente" },
-          { nombre: "Antonio Horn Cruz", votos: 953, partido: "Renovación Nacional" },
-          { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "Democracia Cristiana" },
-          { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "Partido Socialista de Chile" },
+          { nombre: "Marcelo Salazar Vallejos", votos: 1009, partido: "UDI" },
+          { nombre: "Antonio Horn Cruz", votos: 953, partido: "RN" },
+          { nombre: "Rodrigo Schnettler Weisser", votos: 773, partido: "DC" },
+          { nombre: "Nataly Schadow Muñoz", votos: 758, partido: "PS" },
         ]
       },
       "2025": {
         alcalde: {
-          nombre: "Por definir",
+          nombre: "Tomás Gárate Silva",
           votos: 0,
-          partido: "-",
+          partido: "Independiente",
         },
-        concejales: []
+        concejales: [
+          { nombre: "Tamara Rammsy Sánchez", votos: 0, partido: "Independiente" },
+          { nombre: "Nicolás Yunge Jurgensen", votos: 0, partido: "Independiente" },
+          { nombre: "Juan Patricio Godoy", votos: 0, partido: "Independiente" },
+          { nombre: "Rodrigo Schnettler Weisser", votos: 0, partido: "DC" },
+          { nombre: "Antonio Horn Cruz", votos: 0, partido: "RN" },
+          { nombre: "Blanca Bongain Acevedo", votos: 0, partido: "Independiente" },
+        ]
       }
     }
   },
 ];
+
+function periodoLabel(año: string): string {
+  if (año === "2016") return "2016–2021";
+  if (año === "2021") return "2021–2024";
+  if (año === "2025") return "2024–2028";
+  return "";
+}
 
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState("Concejos Municipales");
@@ -110,8 +139,9 @@ export default function Home() {
                   onChange={(e) => setSelectedAnio(e.target.value)}
                   className="bg-white text-black border border-gray-300 rounded-xl px-3 py-2 text-sm w-full shadow-sm focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white dark:border-gray-600"
                 >
+                  <option value="2016">2016–2021</option>
                   <option value="2021">2021–2024</option>
-                  <option value="2025">2025–2028</option>
+                  <option value="2025">2024–2028</option>
                 </select>
               </div>
             </div>
@@ -123,7 +153,7 @@ export default function Home() {
                 <Card className="rounded-2xl shadow dark:bg-gray-800">
                   <CardContent className="p-6 text-center text-white">
                     <h3 className="text-lg font-semibold mb-2 flex items-center justify-center gap-2">
-                      <Vote className="w-5 h-5 text-blue-600 dark:text-blue-400" /> Alcalde ({selectedAnio}–{+selectedAnio + 3})
+                      <Vote className="w-5 h-5 text-blue-600 dark:text-blue-400" /> Alcalde ({periodoLabel(selectedAnio)})
                     </h3>
                     <p><strong>Nombre:</strong> {periodo.alcalde.nombre}</p>
                     <p><strong>Votos:</strong> {periodo.alcalde.votos}</p>
@@ -134,7 +164,7 @@ export default function Home() {
                 <Card className="rounded-2xl shadow dark:bg-gray-800">
                   <CardContent className="p-6 text-white">
                     <h3 className="text-lg font-semibold mb-4 flex items-center justify-center gap-2">
-                      <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" /> Concejales ({selectedAnio}–{+selectedAnio + 3})
+                      <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" /> Concejales ({periodoLabel(selectedAnio)})
                     </h3>
                     {periodo.concejales.length === 0 ? (
                       <p className="text-sm italic text-gray-400 text-center">Aún no se han definido los concejales para este período.</p>
